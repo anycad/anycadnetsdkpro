@@ -1,0 +1,1 @@
+Copy Debug/Relase bin here
