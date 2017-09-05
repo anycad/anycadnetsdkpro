@@ -162,5 +162,18 @@ namespace AnyCAD.Designer
             renderer.SetStandardView(EnumStandardView.SV_Top);
             renderer.SetViewType(EnumStandardView.SV_Top);
         }
+
+        TubeSystem tubeSystem = null;
+        private void tubeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tubeSystem == null)
+            {
+                tubeSystem = new TubeSystem();
+                tubeSystem.Init(this.renderView);
+            }
+
+            tubeSystem.Connect(50);
+            this.renderView.RequestDraw();
+        }
     }
 }
