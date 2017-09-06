@@ -76,15 +76,33 @@ namespace AnyCAD.Designer
         }
     }
 
+     
+
     class TubeSystem
     {
         public BoltElement Bolt;
         public NutElement Nut;
 
+        public double Deep = 0;
+        public double Step = 1;
+
+        FaceStyle RedStyle;
+        FaceStyle BlueStyle;
+
+        public delegate void UpdateViewEvent();
+
+        public UpdateViewEvent OnUpdate;
+
         public TubeSystem()
         {
             Bolt = new BoltElement(100);
             Nut = new NutElement(101);
+
+            RedStyle = new FaceStyle();
+            RedStyle.SetColor(255, 100, 100);
+
+            BlueStyle = new FaceStyle();
+            BlueStyle.SetColor(100, 100, 255);
         }
 
         public void Init(RenderWindow3d renderView)
@@ -94,9 +112,8 @@ namespace AnyCAD.Designer
             Nut.UpdateShape();
 
             Bolt.Node = renderView.ShowGeometry(Bolt.Shape, Bolt.Id);
-            FaceStyle fs = new FaceStyle();
-            fs.SetColor(255, 100, 100);
-            Bolt.Node.SetFaceStyle(fs);
+
+            Bolt.Node.SetFaceStyle(RedStyle);
 
 
             Nut.Node = renderView.ShowGeometry(Nut.Shape, Nut.Id);
@@ -111,6 +128,31 @@ namespace AnyCAD.Designer
             //move Nut
             var trf = GlobalInstance.MatrixBuilder.MakeTranslate(0, 0, deep);
             Bolt.Node.SetTransform(trf);
+
+            if (deep > 50)
+                Bolt.Node.SetFaceStyle(BlueStyle);
+            else
+                Bolt.Node.SetFaceStyle(RedStyle);
+        }
+
+        public void OnTimer()
+        {
+            Deep += Step;
+            if (Deep >= 100)
+            {
+                Deep = 100;
+                Step = -1;
+            }
+            else if (Deep <= 2)
+            {
+                Step = 1;
+                Deep = 2;
+            }
+
+            Connect(Deep);
+
+            if (OnUpdate!=null)
+                OnUpdate();
         }
     }
 }

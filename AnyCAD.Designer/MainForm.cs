@@ -34,6 +34,7 @@ namespace AnyCAD.Designer
 
             GlobalInstance.EventListener.OnChangeCursorEvent += OnChangeCursor;
             GlobalInstance.EventListener.OnSelectElementEvent += OnSelectElement;
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -163,6 +164,11 @@ namespace AnyCAD.Designer
             renderer.SetViewType(EnumStandardView.SV_Top);
         }
 
+        void UpdateView()
+        {
+            this.renderView.RequestDraw();
+        }
+
         TubeSystem tubeSystem = null;
         private void tubeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -170,10 +176,10 @@ namespace AnyCAD.Designer
             {
                 tubeSystem = new TubeSystem();
                 tubeSystem.Init(this.renderView);
-            }
 
-            tubeSystem.Connect(50);
-            this.renderView.RequestDraw();
+                renderView.RenderTick += new Presentation.RenderEventHandler(tubeSystem.OnTimer);
+                tubeSystem.OnUpdate += UpdateView;
+            }
         }
     }
 }
