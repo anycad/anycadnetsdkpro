@@ -14,4 +14,4 @@ API:
 
 Weixin:
 
-![Weixin](.\weixin.jpg)
+![Weixin](weixin.jpg)
