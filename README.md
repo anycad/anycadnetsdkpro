@@ -1,4 +1,17 @@
-anycad.net.sdk.pro
+anycad .net sdk
 ===============
-Document: http://www.anycad.net/docs/getstarted.html
-API: http://anycad.net/api/chs2018/modules.html
+The graphics sdk for anycad graphics sdk for .net developers.
+
+---
+
+Document:
+
+ http://www.anycad.net/docs/getstarted.html
+
+API:
+
+ http://anycad.net/api/chs2018/modules.html
+
+Weixin:
+
+![Weixin](.\weixin.jpg)
