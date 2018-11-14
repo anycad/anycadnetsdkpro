@@ -79,6 +79,7 @@
             this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spiralToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.arcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ecllipsArcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rectangleRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.polygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,6 +133,7 @@
             this.curveIntersectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.queryInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.intersectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hLRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.animationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textureAnimationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,7 +149,7 @@
             this.loadDHermiteRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.arcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manySphereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -571,6 +573,13 @@
             this.spiralToolStripMenuItem.Text = "Spiral";
             this.spiralToolStripMenuItem.Click += new System.EventHandler(this.spiralToolStripMenuItem_Click);
             // 
+            // arcToolStripMenuItem
+            // 
+            this.arcToolStripMenuItem.Name = "arcToolStripMenuItem";
+            this.arcToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.arcToolStripMenuItem.Text = "Arc";
+            this.arcToolStripMenuItem.Click += new System.EventHandler(this.arcToolStripMenuItem_Click);
+            // 
             // ecllipsArcToolStripMenuItem
             // 
             this.ecllipsArcToolStripMenuItem.Name = "ecllipsArcToolStripMenuItem";
@@ -876,7 +885,8 @@
             this.toolStripMenuItem15,
             this.curveIntersectionToolStripMenuItem,
             this.queryInfoToolStripMenuItem,
-            this.intersectionToolStripMenuItem});
+            this.intersectionToolStripMenuItem,
+            this.hLRToolStripMenuItem});
             this.geometryToolStripMenuItem.Name = "geometryToolStripMenuItem";
             this.geometryToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
             this.geometryToolStripMenuItem.Text = "Geometry";
@@ -959,6 +969,13 @@
             this.intersectionToolStripMenuItem.Text = "IntersectionSurface";
             this.intersectionToolStripMenuItem.Click += new System.EventHandler(this.intersectionToolStripMenuItem_Click);
             // 
+            // hLRToolStripMenuItem
+            // 
+            this.hLRToolStripMenuItem.Name = "hLRToolStripMenuItem";
+            this.hLRToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.hLRToolStripMenuItem.Text = "HLR";
+            this.hLRToolStripMenuItem.Click += new System.EventHandler(this.hLRToolStripMenuItem_Click);
+            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -973,7 +990,8 @@
             this.loadPointsToolStripMenuItem,
             this.tTToolStripMenuItem,
             this.loadHermitSplineToolStripMenuItem,
-            this.loadDHermiteRToolStripMenuItem});
+            this.loadDHermiteRToolStripMenuItem,
+            this.manySphereToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.testToolStripMenuItem.Text = "Test";
@@ -1075,12 +1093,12 @@
             this.panel1.Size = new System.Drawing.Size(601, 428);
             this.panel1.TabIndex = 1;
             // 
-            // arcToolStripMenuItem
+            // manySphereToolStripMenuItem
             // 
-            this.arcToolStripMenuItem.Name = "arcToolStripMenuItem";
-            this.arcToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.arcToolStripMenuItem.Text = "Arc";
-            this.arcToolStripMenuItem.Click += new System.EventHandler(this.arcToolStripMenuItem_Click);
+            this.manySphereToolStripMenuItem.Name = "manySphereToolStripMenuItem";
+            this.manySphereToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.manySphereToolStripMenuItem.Text = "ManySphere";
+            this.manySphereToolStripMenuItem.Click += new System.EventHandler(this.manySphereToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -1223,6 +1241,8 @@
         private System.Windows.Forms.ToolStripMenuItem loadHermitSplineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadDHermiteRToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem arcToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hLRToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manySphereToolStripMenuItem;
     }
 }
 

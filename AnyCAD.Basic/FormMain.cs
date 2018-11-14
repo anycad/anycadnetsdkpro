@@ -149,7 +149,7 @@ namespace AnyCAD.Basic
             
             Texture texture = new Texture();
             texture.SetName("mytexture2");
-            texture.SetFilePath(new AnyCAD.Platform.Path("E:\\198.png"));
+            texture.SetFilePath(new AnyCAD.Platform.Path(@"E:\Depot\sdk.net.pro.2\weixin.jpg"));
             style.SetTexture(0, texture);
 
             sceneNode.SetFaceStyle(style);
@@ -2187,7 +2187,7 @@ namespace AnyCAD.Basic
                 TopoShape box = GlobalInstance.BrepTools.MakeBox(Vector3.ZERO, Vector3.UNIT_Z, new Vector3(100, 100, 100));
 
                 SceneNode node = renderView.ShowGeometry(box, 100);
-
+                
                 FaceStyle fs = new FaceStyle();
                 fs.SetTexture(0, texture);
 
@@ -2340,5 +2340,66 @@ namespace AnyCAD.Basic
                 renderView.ShowGeometry(arc, 101);
             }
         }
+
+        private void hLRToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HiddenLineRemovalTool hlr = new HiddenLineRemovalTool();
+            hlr.Initialize(new Vector3(0, 0, 1), new Vector3(0, 0, 100), new Vector3(0, 1, 0), 100, false);
+
+            TopoShape tp = GlobalInstance.BrepTools.MakeCylinder(Vector3.ZERO, Vector3.UNIT_Y, 10, 10, 0);
+
+            hlr.Compute(tp);
+
+            LineStyle ls = new LineStyle();
+            ls.SetColor(255, 0, 0);
+            ls.SetLineWidth(2);
+            
+            var visibuleEdges = hlr.GetVisibleEdges();
+            for(int ii=0, len = visibuleEdges.Size(); ii<len; ++ii)
+            {
+               var node =  renderView.ShowGeometry(visibuleEdges.GetAt(ii), ii);
+                node.SetLineStyle(ls);
+            }
+
+
+            LineStyle ls2 = new LineStyle();
+            ls2.SetColor(0, 255, 0);
+
+            var hiddenEdges = hlr.GetHiddenEdges();
+            for (int ii = 0, len = hiddenEdges.Size(); ii < len; ++ii)
+            {
+              var node =  renderView.ShowGeometry(hiddenEdges.GetAt(ii), ii);
+                node.SetLineStyle(ls2);
+            }
+
+            renderView.RequestDraw();
+        }
+
+        private void manySphereToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sphere = GlobalInstance.BrepTools.MakeSphere(Vector3.ZERO, 1);
+            var entity = GlobalInstance.TopoShapeConvert.ToEntity(sphere, 0.1);
+            entity.SetShapeFilter((int)EnumPickMode.RF_Face);
+            var random = new Random();
+            for(int ii=0; ii<10000; ++ii)
+            {
+                var node = new EntitySceneNode();
+                node.SetEntity(entity);             
+                node.SetId(new ElementId(ii));
+
+                double radius = random.NextDouble() * 20;
+                var scale = GlobalInstance.MatrixBuilder.MakeScale(radius, radius, radius);
+                var position = GlobalInstance.MatrixBuilder.MakeTranslate(random.NextDouble() * 1000, random.NextDouble() * 1000, random.NextDouble() * 1000);
+
+                var trf = GlobalInstance.MatrixBuilder.Multiply(position, scale);
+
+                node.SetTransform(trf);
+
+                renderView.ShowSceneNode(node);
+            }
+
+            renderView.RequestDraw();
+        }
+
     }
 }

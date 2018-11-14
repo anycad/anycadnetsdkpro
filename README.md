@@ -1,4 +1,4 @@
 anycad.net.sdk.pro
 ===============
-
-The samples for using AnyCAD .Net SDK Pro
+Document: http://www.anycad.net/docs/getstarted.html
+API: http://anycad.net/api/chs2018/modules.html

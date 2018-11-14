@@ -39,8 +39,6 @@ namespace AnyCAD.Designer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            mDrawLineEditor = new DrawLineEditor(OnAddLine);
-
             mDefaultLineStyle = new LineStyle();
             mDefaultLineStyle.SetColor(255, 0, 0);
             mDefaultLineStyle.SetLineWidth(2);
@@ -132,6 +130,8 @@ namespace AnyCAD.Designer
         }
         private void lineToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(mDrawLineEditor == null)
+                mDrawLineEditor = new DrawLineEditor(OnAddLine);
             renderView.ActiveEditor(mDrawLineEditor);
             toolStripStatusLabel2.Text = "Draw Line";
         }
@@ -180,6 +180,16 @@ namespace AnyCAD.Designer
                 renderView.RenderTick += new Presentation.RenderEventHandler(tubeSystem.OnTimer);
                 tubeSystem.OnUpdate += UpdateView;
             }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mDrawLineEditor = null;
         }
     }
 }
