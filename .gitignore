@@ -1,10 +1,7 @@
-AnyCAD.Basic/obj/
+
 bin/x86/
 bin/x64/
-AnyCAD.Net.SDK.Sample.suo
-AnyCAD.WPF/obj/
-DxfViewer/obj/
-StpViewer/obj/
+*.suo
 *.user
-/AnyCAD.Designer/obj/
-/.vs/AnyCAD.Net.SDK.Sample/v15
+.vs
+obj

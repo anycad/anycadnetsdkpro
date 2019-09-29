@@ -1474,7 +1474,11 @@ namespace AnyCAD.Basic
 
             TopoShape loft = GlobalInstance.BrepTools.MakeLoft(rect, circle, true);
 
-            renderView.ShowGeometry(loft, ++shapeId);
+            TopoShape cyliner = GlobalInstance.BrepTools.MakeCylinder(new Vector3(0, 0, 0), Vector3.UNIT_Z, 5, 50, 0);
+
+            TopoShape obj = GlobalInstance.BrepTools.BooleanCut(loft, cyliner);
+
+            renderView.ShowGeometry(obj, ++shapeId);
             renderView.RequestDraw();
         }
 
@@ -2401,5 +2405,34 @@ namespace AnyCAD.Basic
             renderView.RequestDraw();
         }
 
+        private void sweep3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // create the path
+            var path = GlobalInstance.BrepTools.MakeArc(new Vector3(100, 100, 0), new Vector3(-100, 100, 0), Vector3.ZERO, Vector3.UNIT_Z);
+
+            // Get the sketch position and direction
+            GeomCurve curve = new GeomCurve();
+            curve.Initialize(path);
+
+            var rt = curve.D1(curve.FirstParameter());
+
+            var position = rt[0];
+            var dir = rt[1];
+            dir.Normalize();
+
+            var sketch = GlobalInstance.BrepTools.MakeCircle(position, 5, dir);
+
+            // Create pipe
+            var pipe =  GlobalInstance.BrepTools.Sweep(sketch, path, true);
+
+            renderView.ShowGeometry(pipe, 100);
+        }
+
+        private void lineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopoShape line = GlobalInstance.BrepTools.MakeLine(new Vector3(1, 1, 1), new Vector3(2, 2, 2));
+            var node =  GlobalInstance.TopoShapeConvert.ToSceneNode(line, 1);
+            renderView.ShowSceneNode(node);
+        }
     }
 }
