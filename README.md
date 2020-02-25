@@ -10,7 +10,7 @@ Document:
 
 API:
 
- http://anycad.net/api/chs2018/modules.html
+ http://anycad.net/api/chs2020/modules.html
 
 Weixin:
 

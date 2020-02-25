@@ -1,0 +1,9 @@
+AppProConfig.xml
+SamCore*.dll
+AnySamGeom.dll
+AnyCore*.dll
+AnyViz*.dll
+AnyExchange*.dll
+AnyPlatform*.dll
+AnyCAD.*.dll
+slapi.dll

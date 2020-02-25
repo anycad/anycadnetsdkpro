@@ -41,7 +41,7 @@ namespace StpViewer
         {
             renderView.ExecuteCommand("ShadeWithEdgeMode");
             renderView.ShowCoordinateAxis(true);
-            renderView.SetPickMode((int)EnumPickMode.RF_Face);
+            //renderView.SetPickMode((int)EnumPickMode.RF_Edge);
             this.renderView.RequestDraw();
         }
 
@@ -95,6 +95,11 @@ namespace StpViewer
             {
                 renderView.CaptureImage(dlg.FileName);
             }
+        }
+
+        private void zoomFitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            renderView.FitAll();
         }
     }
 

@@ -1751,21 +1751,39 @@ namespace AnyCAD.Basic
         }
         private void holeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TopoShape spline1 = LoadSplineFromFile();
-            renderView.ShowGeometry(spline1, ++shapeId);
+            //TopoShape spline1 = LoadSplineFromFile();
+            //renderView.ShowGeometry(spline1, ++shapeId);
 
-            TopoShape spline2 = LoadSplineFromFile();
-            renderView.ShowGeometry(spline2, ++shapeId);
+            //TopoShape spline2 = LoadSplineFromFile();
+            //renderView.ShowGeometry(spline2, ++shapeId);
 
-            TopoShape shell = GlobalInstance.BrepTools.MakeLoft(spline1, spline2, false);
+            //TopoShape shell = GlobalInstance.BrepTools.MakeLoft(spline1, spline2, false);
 
-            TopoShape hole = LoadSplineFromFile();
-            //renderView.ShowGeometry(hole, ++shapeId);
+            //TopoShape hole = LoadSplineFromFile();
+            ////renderView.ShowGeometry(hole, ++shapeId);
 
-            TopoShape faceWithHole = GlobalInstance.BrepTools.AddHole(shell, hole);
-            renderView.ShowGeometry(faceWithHole, ++shapeId);
+            //TopoShape faceWithHole = GlobalInstance.BrepTools.AddHole(shell, hole);
+            //renderView.ShowGeometry(faceWithHole, ++shapeId);
 
-            renderView.RequestDraw();
+            var cirle = GlobalInstance.BrepTools.MakeCircle(Vector3.ZERO, 10, Vector3.UNIT_Z);
+            var face = GlobalInstance.BrepTools.Extrude(cirle, 100, Vector3.UNIT_Z);
+
+           // renderView.ShowGeometry(face, ++shapeId);
+
+            WireClassifier wc = new WireClassifier();
+            wc.Initialize(face);
+            TopoExplor te = new TopoExplor();
+            var edges = te.ExplorEdges(wc.GetOuterWire());
+            for(int ii=0, len = edges.Size(); ii<len; ++ii)
+            {
+                var edge = edges.GetAt(ii);
+                GeomCurve curve = new GeomCurve();
+                curve.Initialize(edge);
+                if(curve.IsClosed())
+                {
+                    renderView.ShowGeometry(edge, ++shapeId);
+                }
+            }
         }
 
         private void evolvedToolStripMenuItem_Click(object sender, EventArgs e)
