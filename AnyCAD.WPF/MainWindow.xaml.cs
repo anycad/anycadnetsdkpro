@@ -27,10 +27,10 @@ namespace AnyCAD.WPF
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Create the interop host control.
-            System.Windows.Forms.Integration.WindowsFormsHost host =
+            var host =
                 new System.Windows.Forms.Integration.WindowsFormsHost();
 
-            AnyCAD.Presentation.RenderWindow3d renderView = new AnyCAD.Presentation.RenderWindow3d();
+            var renderView = new AnyCAD.Presentation.RenderWindow3d();
             host.Child = renderView;
 
             this.grid3d.Children.Add(host);

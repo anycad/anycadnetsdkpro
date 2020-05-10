@@ -101,6 +101,37 @@ namespace StpViewer
         {
             renderView.FitAll();
         }
+
+        private void circleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectedShapeQuery query = new SelectedShapeQuery();
+            renderView.QuerySelection(query);
+            var shape = query.GetSubGeometry();
+            if (shape == null)
+                return;
+
+            GeomCurve curve = new GeomCurve();
+            if (!curve.Initialize(shape))
+                return;
+
+            if(curve.GetCurveType() != EnumCurveType.CurveType_Circle)
+            {
+                var xx = curve.FirstParameter() + curve.LastParameter();
+                Vector3 pt1 = curve.Value(curve.FirstParameter());
+                Vector3 pt2 = curve.Value(xx * 0.3);
+                Vector3 pt3 = curve.Value(xx * 0.6);
+
+                var arc = GlobalInstance.BrepTools.MakeArc3Pts(pt1, pt3, pt2);
+                if(arc != null)
+                {
+                    GeomCircle circle = new GeomCircle();
+                    circle.Initialize(arc);
+                    var center = circle.GetCenter();
+                    MessageBox.Show(String.Format("Center: {0}, {1}, {2}", center.X, center.Y, center.Z));
+                }
+
+            }
+        }
     }
 
 

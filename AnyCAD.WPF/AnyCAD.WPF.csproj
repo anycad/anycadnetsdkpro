@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\AnyCAD.Net.Pro.2020.0.1\build\net\AnyCAD.Net.Pro.props" Condition="Exists('..\packages\AnyCAD.Net.Pro.2020.0.1\build\net\AnyCAD.Net.Pro.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -15,6 +16,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -65,11 +68,14 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AnyCAD.Foundation.Net">
-      <HintPath>..\bin\$(Platform)\$(Configuration)\AnyCAD.Foundation.Net.dll</HintPath>
+    <Reference Include="AnyCAD.Exchange.Net, Version=20.0.7416.40275, Culture=neutral, PublicKeyToken=adad17ef48f32d48, processorArchitecture=AMD64">
+      <HintPath>..\packages\AnyCAD.Net.Pro.2020.0.1\lib\x64\AnyCAD.Exchange.Net.dll</HintPath>
     </Reference>
-    <Reference Include="AnyCAD.Presentation.Net">
-      <HintPath>..\bin\$(Platform)\$(Configuration)\AnyCAD.Presentation.Net.dll</HintPath>
+    <Reference Include="AnyCAD.Foundation.Net, Version=20.0.7416.40273, Culture=neutral, PublicKeyToken=adad17ef48f32d48, processorArchitecture=AMD64">
+      <HintPath>..\packages\AnyCAD.Net.Pro.2020.0.1\lib\x64\AnyCAD.Foundation.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="AnyCAD.Presentation.Net, Version=20.0.7416.40275, Culture=neutral, PublicKeyToken=adad17ef48f32d48, processorArchitecture=AMD64">
+      <HintPath>..\packages\AnyCAD.Net.Pro.2020.0.1\lib\x64\AnyCAD.Presentation.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,6 +129,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,6 +137,12 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\AnyCAD.Net.Pro.2020.0.1\build\net\AnyCAD.Net.Pro.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AnyCAD.Net.Pro.2020.0.1\build\net\AnyCAD.Net.Pro.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

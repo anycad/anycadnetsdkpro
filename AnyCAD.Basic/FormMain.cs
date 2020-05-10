@@ -246,33 +246,7 @@ namespace AnyCAD.Basic
             renderView.RenderTimer.Enabled = false;
             if (shape != null)
             {
-                TopoShapeGroup group = new TopoShapeGroup();
-                group.Add(shape);
-                //GlobalInstance.BrepTools.SaveFile(group, "d:\\anycad.brep");
-                //PhongMaterial material = new PhongMaterial();
-                //material.SetAmbient(new ColorValue(0.24725f, 0.2245f, 0.0645f));
-                //material.SetDiffuse(new ColorValue(0.84615f, 0.8143f, 0.2903f));
-                //material.SetSpecular(new ColorValue(0.797357f, 0.723991f, 0.208006f));
-                //material.SetShininess(83.2f);
-                //FaceStyle faceStyle = new FaceStyle();
-                //faceStyle.SetMaterial(material);
-                //SceneManager sceneMgr = renderView.SceneManager;
-                //TopoShapeGroup subGroup = GlobalInstance.TopoExplor.ExplorSubShapes(shape);
-                //int nSize = subGroup.Size();
-                //for (int ii = 0; ii < nSize; ++ii)
-                //{
-                //    SceneNode node = GlobalInstance.TopoShapeConvert.ToEntityNode(subGroup.GetTopoShape(ii), 10f);
-                //    node.SetId(++shapeId);
-                //    node.SetFaceStyle(faceStyle);
-
-                //    sceneMgr.AddNode(node);
-                //}
-                SceneManager sceneMgr = renderView.SceneManager;
-                SceneNode rootNode = GlobalInstance.TopoShapeConvert.ToSceneNode(shape, 0.1f);
-                if (rootNode != null)
-                {
-                    sceneMgr.AddNode(rootNode);
-                }
+                renderView.ShowGeometry(shape, 0);
             }
             renderView.RenderTimer.Enabled = true;
         
@@ -1450,23 +1424,6 @@ namespace AnyCAD.Basic
             renderView.ActiveEditor(new QueryShapeInfoEditor());
         }
 
-        private void sTEPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "STEP (*.stp;*.step)|*.stp;*.step|All Files(*.*)|*.*";
-
-            if (DialogResult.OK != dlg.ShowDialog())
-                return;
-
-            //AnyCAD.Exchange.ShowShapeReaderContext context = new AnyCAD.Exchange.ShowShapeReaderContext(renderView.SceneManager);
-            //context.NextShapeId = ++shapeId;
-            //AnyCAD.Exchange.StepReader reader = new AnyCAD.Exchange.StepReader();
-            //reader.Read(dlg.FileName, context);
-
-            //shapeId = context.NextShapeId + 1;
-            //renderView.RequestDraw(EnumRenderHint.RH_LoadScene);
-        }
-
         private void loft2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TopoShape circle = GlobalInstance.BrepTools.MakeCircle(new Vector3(0, 0, 50), 10, Vector3.UNIT_Z);
@@ -2451,6 +2408,156 @@ namespace AnyCAD.Basic
             TopoShape line = GlobalInstance.BrepTools.MakeLine(new Vector3(1, 1, 1), new Vector3(2, 2, 2));
             var node =  GlobalInstance.TopoShapeConvert.ToSceneNode(line, 1);
             renderView.ShowSceneNode(node);
+        }
+
+        private void transformToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cone = GlobalInstance.BrepTools.MakeCone(Vector3.ZERO, Vector3.UNIT_Z, 2, 10, 1, 90);
+
+            renderView.ShowGeometry(cone, 1000);
+
+            var node1 = renderView.ShowGeometry(cone, 1001);
+            var trf = GlobalInstance.MatrixBuilder.MakeRotation(45, Vector3.UNIT_X);
+            node1.SetTransform(trf);
+
+            var node2 = renderView.ShowGeometry(cone, 1002);
+            var trf2 = GlobalInstance.MatrixBuilder.MakeRotation(30, Vector3.UNIT_Y);
+            node2.SetTransform(trf2 * trf);
+
+            
+        }
+
+        private void chamferToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var box = GlobalInstance.BrepTools.MakeBox(Vector3.ZERO, Vector3.UNIT_Z, new Vector3(100, 100, 100));
+            var edges = GlobalInstance.TopoExplor.ExplorEdges(box);
+
+            var edgeIdxes = new List<int>();
+            var cham1 = new List<float>();
+            var cham2 = new List<float>();
+            for(int ii =0; ii < edges.Size(); ++ii)
+            {
+                edgeIdxes.Add(ii);
+
+                cham1.Add(0.5f);
+                cham2.Add(0.2f);
+            }
+
+            var chamferShape = GlobalInstance.BrepTools.MakeChamfer(box, edgeIdxes.ToArray(), cham1.ToArray(), cham2.ToArray());
+            renderView.ShowGeometry(chamferShape, 100);
+        }
+
+        private void intersectionCurveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            {
+                Vector3 pos1 = new Vector3();
+                pos1.X = 0;
+                pos1.Y = 0;
+                pos1.Z = 0;
+                Vector3 pos2 = new Vector3();
+                pos2.X = 10;
+                pos2.Y = 0;
+                pos2.Z = 0;
+                Vector3 pos3 = new Vector3();
+                pos3.X = 5;
+                pos3.Y = 10;
+                pos3.Z = 0;
+                Vector3 pos4 = new Vector3();
+                pos4.X = 5;
+                pos4.Y = -10;
+                pos4.Z = 0;
+                TopoShape pS1 = GlobalInstance.BrepTools.MakeLine(pos2, pos1);
+                TopoShape pS2 = GlobalInstance.BrepTools.MakeLine(pos4, pos3);
+
+                IntersectionLineCurve pInCur5 = new IntersectionLineCurve();
+                pInCur5.SetCurve(pS1);
+                bool bInter5 = pInCur5.Perform(pS2);
+                if (bInter5)
+                {
+
+                    // if(pInCur5.)
+                    Vector3 point3 = pInCur5.GetNearestPoint();
+
+
+                    //renderView.ShowGeometry(pS1, 1);
+                    //renderView.ShowGeometry(pS2, 1);
+
+                    //var sphere = GlobalInstance.BrepTools.MakeSphere(point3, 1);
+                    //renderView.ShowGeometry(sphere, 2);
+                }
+            }
+
+            {
+                Vector3 pos1 = new Vector3();
+                pos1.X = 0;
+                pos1.Y = 0;
+                pos1.Z = 0;
+
+                Vector3 pos2 = new Vector3();
+                pos2.X = 10;
+                pos2.Y = 0;
+                pos2.Z = 0;
+
+                Vector3 pos3 = new Vector3();
+                pos3.X = 0;
+                pos3.Y = 10;
+                pos3.Z = 0;
+                TopoShape pS1 = GlobalInstance.BrepTools.MakeLine(pos2, pos1);
+                TopoShape pS2 = GlobalInstance.BrepTools.MakeLine(pos1, pos3);
+                TopoShape shape1 = GlobalInstance.BrepTools.MakeOffsetWire(pS1, 6, 0, true);
+                TopoShape shape11 = GlobalInstance.BrepTools.MakeOffsetWire(pS2, 6, 0, true);
+
+                renderView.ShowGeometry(shape1, 1);
+                renderView.ShowGeometry(shape11, 1);
+
+               
+
+
+                IntersectionLineCurve pInCur = new IntersectionLineCurve();
+                pInCur.SetCurve(shape1);
+                bool bInter = pInCur.Perform(shape11);
+                if (bInter)
+                {
+                    Vector3 point3 = pInCur.GetPoint(0);
+                    int k = 0;
+                }
+
+            }
+
+        }
+
+        private void renderOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            
+            TopoShape line1 = GlobalInstance.BrepTools.MakeLine(new Vector3(0, 0, 0), new Vector3(100, 100, 100));
+            TopoShape line2 = GlobalInstance.BrepTools.MakeLine(new Vector3(0, 0, 0), new Vector3(50, 50, 50));
+            SceneNode node1 = GlobalInstance.TopoShapeConvert.ToSceneNode(line1, 0.1);
+            SceneNode node2 = GlobalInstance.TopoShapeConvert.ToSceneNode(line2, 0.1);
+            LineStyle style1 = new LineStyle();
+            style1.SetColor(ColorValue.WHITE);
+            style1.SetLineWidth(1);
+            LineStyle style2 = new LineStyle();
+            style2.SetColor(ColorValue.BLUE);
+            style2.SetLineWidth(1);
+
+            var fs = new FaceStyle();
+            fs.SetTransparent(true);
+
+            node1.SetLineStyle(style1);
+            node1.SetFaceStyle(fs);
+            node2.SetLineStyle(style2);
+            node2.SetFaceStyle(fs);
+            Console.WriteLine(node1.GetRenderOrder().ToString());
+            Console.WriteLine(node2.GetRenderOrder().ToString());
+            node1.SetRenderOrder(100);
+            node2.SetRenderOrder(200);
+
+            renderView.ShowSceneNode(node1);
+            renderView.ShowSceneNode(node2);
+            Console.WriteLine(node1.GetRenderOrder().ToString());
+            Console.WriteLine(node2.GetRenderOrder().ToString());
+            renderView.RequestDraw();
         }
     }
 }
