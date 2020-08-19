@@ -2559,5 +2559,16 @@ namespace AnyCAD.Basic
             Console.WriteLine(node2.GetRenderOrder().ToString());
             renderView.RequestDraw();
         }
+
+        private void loft4ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var baseSketch = GlobalInstance.BrepTools.MakeRectangle(10, 20, 2, Coordinate3.UNIT_XYZ);
+
+            var topSketch = GlobalInstance.BrepTools.ProjectOnPlane(baseSketch, new Vector3(0, 0, 30), new Vector3(0, 0.5, 0.5), Vector3.UNIT_Z);
+
+            var shape = GlobalInstance.BrepTools.MakeLoft(baseSketch, topSketch, true);
+
+            renderView.ShowGeometry(shape, 100);
+        }
     }
 }
